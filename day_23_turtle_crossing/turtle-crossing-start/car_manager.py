@@ -1,5 +1,3 @@
-import time
-from time import sleep
 from turtle import Turtle
 import random
 
@@ -24,7 +22,7 @@ class CarManager(Turtle):
         return car
 
     def create_cars(self):
-        rand_chance = random.randint(1, 8)
+        rand_chance = random.randint(1, 10)
         if rand_chance == 4:
             car = self.create_car(random.choice(COLORS))
             rand_y = random.randint(-250, 250)
@@ -35,3 +33,8 @@ class CarManager(Turtle):
         for car in self.cars:
             car.forward(self.car_speed)
 
+
+    def level_up(self):
+        self.car_speed += MOVE_INCREMENT
+        print("Car Speed")
+        print(self.car_speed)

@@ -13,7 +13,7 @@ player = Player()
 car_manager = CarManager()
 
 screen.listen()
-screen.onkey(player.move, "Up")
+screen.onkey(player.move_up, "Up")
 
 
 
@@ -24,5 +24,11 @@ while game_is_on:
     screen.update()
     car_manager.create_cars()
     car_manager.move_cars()
+
+#   Detect collision with a car
+    player.detect_collision(car_manager.cars)
+    player.return_to_start()
+    car_manager.level_up()
+
 
 screen.exitonclick()

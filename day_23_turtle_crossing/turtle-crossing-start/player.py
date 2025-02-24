@@ -12,7 +12,7 @@ class Player(Turtle):
         self.goto(STARTING_POSITION)
         self.left(90)
 
-    def move(self):
+    def move_up(self):
         self.forward(MOVE_DISTANCE)
 
     def detect_collision(self, cars):
@@ -20,4 +20,8 @@ class Player(Turtle):
         for car in cars:
             if self.distance(car) < 25:
                 print("STRIKE")
+
+    def return_to_start(self):
+        if self.ycor() == FINISH_LINE_Y:
+            self.goto(STARTING_POSITION)
 
