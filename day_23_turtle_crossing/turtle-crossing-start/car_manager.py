@@ -1,3 +1,4 @@
+import time
 from time import sleep
 from turtle import Turtle
 import random
@@ -23,13 +24,12 @@ class CarManager(Turtle):
         return car
 
     def create_cars(self):
-        car = self.create_car(random.choice(COLORS))
-        rand_y = random.choice([-250,-100, 0, 100, 250])
-        car.goto(300, rand_y)
-        self.cars.append(car)
-        # for colour in COLORS:
-        #     car = self.create_car(colour)
-        #     self.cars.append(car)
+        rand_chance = random.randint(1, 8)
+        if rand_chance == 4:
+            car = self.create_car(random.choice(COLORS))
+            rand_y = random.randint(-250, 250)
+            car.goto(300, rand_y)
+            self.cars.append(car)
 
     def move_cars(self):
         for car in self.cars:
