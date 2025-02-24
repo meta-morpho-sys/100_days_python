@@ -14,3 +14,10 @@ class Player(Turtle):
 
     def move(self):
         self.forward(MOVE_DISTANCE)
+
+    def detect_collision(self, cars):
+        #   Detect collision with a car
+        for car in cars:
+            if self.distance(car) < 25:
+                print("STRIKE")
+
