@@ -9,8 +9,10 @@ class Player(Turtle):
         super(Player, self).__init__()
         self.penup()
         self.shape("turtle")
+        self.color('yellow')
         self.goto(STARTING_POSITION)
         self.left(90)
+        self.new_level = "no"
 
     def move_up(self):
         self.forward(MOVE_DISTANCE)
@@ -24,4 +26,6 @@ class Player(Turtle):
     def return_to_start(self):
         if self.ycor() == FINISH_LINE_Y:
             self.goto(STARTING_POSITION)
+            self.new_level = 'yes'
+            return self.new_level
 
