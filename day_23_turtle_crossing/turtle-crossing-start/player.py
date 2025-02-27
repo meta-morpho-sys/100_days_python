@@ -17,13 +17,6 @@ class Player(Turtle):
     def move_up(self):
         self.forward(MOVE_DISTANCE)
 
-    def detect_collision(self, cars):
-        #   Detect collision with a car
-        for car in cars:
-            if self.distance(car) < 25:
-                print("END OF GAME")
-                exit(1)
-
     def return_to_start(self):
         if self.ycor() == FINISH_LINE_Y:
             self.goto(STARTING_POSITION)

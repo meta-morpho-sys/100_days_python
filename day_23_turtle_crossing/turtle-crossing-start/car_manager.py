@@ -14,8 +14,7 @@ class CarManager(Turtle):
         self.car_speed = STARTING_MOVE_DISTANCE
 
     def create_car(self,colour):
-        car = Turtle()
-        car.shape("square")
+        car = Turtle("square")
         car.fillcolor(colour)
         car.shapesize(stretch_wid=1, stretch_len=2)
         car.penup()
@@ -27,7 +26,7 @@ class CarManager(Turtle):
         if rand_chance == 2:
             car = self.create_car(random.choice(COLORS))
             rand_y = random.randint(-250, 250)
-            car.goto(300, rand_y)
+            car.goto(400, rand_y)
             self.cars.append(car)
 
     def move_cars(self):
