@@ -36,8 +36,6 @@ class CarManager(Turtle):
 
     def level_up(self):
         self.car_speed += MOVE_INCREMENT
-        print("Car Speed")
-        print(self.car_speed)
 
     def increase_car_creation(self):
         self.car_prod_level -= 1

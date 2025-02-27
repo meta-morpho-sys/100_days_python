@@ -32,7 +32,7 @@ while game_is_on:
             game_is_on = False
     new_level = player.return_to_start()
     if new_level == 'yes':
-        scoreboard.increase_score()
+        scoreboard.increase_level()
         car_manager.level_up()
         car_manager.increase_car_creation()
 
