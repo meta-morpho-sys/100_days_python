@@ -32,6 +32,7 @@ while game_is_on:
     if new_level == 'yes':
         scoreboard.increase_score()
         car_manager.level_up()
+        car_manager.increase_car_creation()
 
 
 screen.exitonclick()

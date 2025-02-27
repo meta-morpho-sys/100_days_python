@@ -21,7 +21,8 @@ class Player(Turtle):
         #   Detect collision with a car
         for car in cars:
             if self.distance(car) < 25:
-                print("STRIKE")
+                print("END OF GAME")
+                exit(1)
 
     def return_to_start(self):
         if self.ycor() == FINISH_LINE_Y:
