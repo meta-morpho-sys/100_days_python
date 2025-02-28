@@ -29,7 +29,9 @@ while game_is_on:
     #   Detect collision with a car
     for car in car_manager.cars:
         if car.distance(player) < 20:
+            scoreboard.end_game()
             game_is_on = False
+
     new_level = player.return_to_start()
     if new_level == 'yes':
         scoreboard.increase_level()
