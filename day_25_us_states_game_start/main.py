@@ -20,11 +20,10 @@ while len(correct_states) < 50:
     guessed_states = len(correct_states)
     answer_state = screen.textinput(f"Guess the State({guessed_states}/50 States)",
                                     "What's another name of a state?").title()
+    if answer_state == 'Exit':
+        break
     if answer_state in all_states:
         ## check answer against the list of states
         correct_states.append(answer_state)
         state_data_row = states_data[states_data.state == answer_state]
         map_manager.update_map(state_data_row)
-
-
-screen.exitonclick()
