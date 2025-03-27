@@ -1,3 +1,4 @@
+import math
 from tkinter import *
 from math import floor
 # ---------------------------- CONSTANTS ------------------------------- #
@@ -54,6 +55,12 @@ def count_down(seconds):
         canvas.after(1000, count_down, seconds - 1)
     else:
         start_count()
+        marks = ''
+        work_sessions = math.floor(reps/2)
+        for _ in  range(work_sessions):
+            marks += '✓'
+            check_mark.config(text=f"Pomodoros completed: {marks}")
+
 
 # ---------------------------- UI SETUP ------------------------------- #
 window = Tk()
@@ -63,7 +70,7 @@ window.config(pady=50, padx=100, bg=YELLOW)
 canvas = Canvas(width=200, height=224, bg=YELLOW, highlightthickness=0)
 tomato_img = PhotoImage(file='tomato.png')
 canvas.create_image(99, 112, image=tomato_img)
-timer_text = canvas.create_text(99,130, text=f"{WORK_MIN}:00", fill='white', font=(FONT_NAME, 31, 'bold'))
+timer_text = canvas.create_text(99, 130, text=f"{WORK_MIN}:00", fill='white', font=(FONT_NAME, 31, 'bold'))
 canvas.grid(column=1, row=1)
 
 
@@ -74,12 +81,12 @@ reset_button = Button(text='Reset', width=3, bg=YELLOW, border=0, highlightthick
 reset_button.grid(column=2, row=2)
 
 # Check-marks
-check_mark = Label(text='✓', font=(FONT_NAME,35), fg=GREEN, bg=YELLOW)
+check_mark = Label(text='', font=(FONT_NAME, 25), fg=GREEN, bg=YELLOW)
 check_mark.grid(column=1, row=3)
 
 # Timer label
-timer_l = Label(text='Timer', font=(FONT_NAME, 45), bg=YELLOW, fg=GREEN)
-timer_l.grid(column=1, row=0)
+title_label = Label(text='Timer', font=(FONT_NAME, 45), bg=YELLOW, fg=GREEN)
+title_label.grid(column=1, row=0)
 
 
 window.mainloop()
