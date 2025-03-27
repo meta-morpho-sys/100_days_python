@@ -14,7 +14,25 @@ LONG_BREAK_MIN = 20
 
 # ---------------------------- TIMER MECHANISM ------------------------------- #
 def start_count():
-    count_down(WORK_MIN * 60)
+    global reps
+    reps += 1
+    work_sec = WORK_MIN * 60
+    short_break_sec = SHORT_BREAK_MIN * 60
+    long_break_sec = LONG_BREAK_MIN * 60
+
+    # 4-Pomodoro Cycle + Long break
+    if reps % 2 == 0 and not reps % 8 == 0:
+        # If it is the 2nd, 4th, 6th repetition
+        print("SHORT BREAK")
+        count_down(short_break_sec)
+    elif reps % 8 == 0:
+        print("LONG BREAK")
+        count_down(long_break_sec)
+    else:
+        # If it is the 1st, 3rd, 5th, 7th repetition
+        print("WORK")
+        count_down(work_sec)
+
 
 # ---------------------------- COUNTDOWN MECHANISM ------------------------------- # 
 def count_down(seconds):
@@ -31,6 +49,8 @@ def count_down(seconds):
     canvas.itemconfig(timer_text, text=f"{count_min}:{count_sec}")
     if seconds > 0:
         canvas.after(1000, count_down, seconds - 1)
+    else:
+        start_count()
 
 # ---------------------------- UI SETUP ------------------------------- #
 window = Tk()
