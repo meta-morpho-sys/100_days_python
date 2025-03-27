@@ -19,7 +19,7 @@ def start_count():
 # ---------------------------- COUNTDOWN MECHANISM ------------------------------- # 
 def count_down(seconds):
     count_minutes = floor(seconds / 60)
-    count_seconds = round(seconds % 60)
+    count_seconds = seconds % 60
     print(count_seconds)
 
     canvas.itemconfig(timer_text, text=f"{count_minutes}:{count_seconds}")
