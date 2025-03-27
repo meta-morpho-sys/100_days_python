@@ -24,13 +24,16 @@ def start_count():
     if reps % 2 == 0 and not reps % 8 == 0:
         # If it is the 2nd, 4th, 6th repetition
         print("SHORT BREAK")
+        title_label.config(text="Take a short break", fg=PINK)
         count_down(short_break_sec)
     elif reps % 8 == 0:
         print("LONG BREAK")
+        title_label.config(text="Take a long break", fg=GREEN)
         count_down(long_break_sec)
     else:
         # If it is the 1st, 3rd, 5th, 7th repetition
         print("WORK")
+        title_label.config(text="Start concentrating", fg=RED)
         count_down(work_sec)
 
 
