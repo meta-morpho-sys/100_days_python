@@ -18,12 +18,18 @@ def start_count():
 
 # ---------------------------- COUNTDOWN MECHANISM ------------------------------- # 
 def count_down(seconds):
-    count_minutes = floor(seconds / 60)
-    count_seconds = seconds % 60
-    print(count_seconds)
+    count_min = floor(seconds / 60)
+    count_sec = seconds % 60
+    if count_sec == 0:
+        count_sec = "00"
+    if int(count_sec) < 10 and not int(count_sec) == 0:
+        count_sec = f"0{count_sec}"
+    if  count_min <= 9 or count_min ==0:
+        count_min = f"0{count_min}"
 
-    canvas.itemconfig(timer_text, text=f"{count_minutes}:{count_seconds}")
-    if seconds >= 0:
+
+    canvas.itemconfig(timer_text, text=f"{count_min}:{count_sec}")
+    if seconds > 0:
         canvas.after(1000, count_down, seconds - 1)
 
 # ---------------------------- UI SETUP ------------------------------- #
@@ -47,6 +53,7 @@ reset_button.grid(column=2, row=2)
 # Check-marks
 check_mark = Label(text='✓', font=(FONT_NAME,35), fg=GREEN, bg=YELLOW)
 check_mark.grid(column=1, row=3)
+
 # Timer label
 timer_l = Label(text='Timer', font=(FONT_NAME, 45), bg=YELLOW, fg=GREEN)
 timer_l.grid(column=1, row=0)
