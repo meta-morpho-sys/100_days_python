@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import messagebox
 
 LOGO_RED='#D84040'
 FONT=('Arial', 10, 'bold')
@@ -8,11 +9,25 @@ FONT=('Arial', 10, 'bold')
 def save():
     # Take values for all 3 inputs and store them in a file
     # TODO: Password needs encryption
-    new_entry = f"{website_input.get()},{username_input.get()},{password_input.get()}\n"
-    with open('data.csv', 'a') as data:
-        data.write(new_entry)
-    website_input.delete(0,END)
-    password_input.delete(0,END)
+    website = website_input.get()
+    username = username_input.get()
+    pswd = password_input.get()
+
+    # Validation
+    entries = [website,username,pswd]
+    err_msg = "Please, don't leave any fields empty"
+    err_title = 'Empty Fields Warning'
+    empty_fields = [messagebox.showerror(title=err_title, message=err_msg) for entry in entries if "".__eq__(entry)]
+    if not empty_fields:
+        new_entry = f"{website},{username},{pswd}\n"
+        message = f"Are these entries correct?\n\nUsername: {username}\nPassword: {pswd}"
+        is_ok = messagebox.askokcancel(title=website, message=message)
+        if is_ok:
+            with open('data.csv', 'a') as data:
+                data.write(new_entry)
+            website_input.delete(0,END)
+            password_input.delete(0,END)
+            messagebox.showinfo(message="Username and Password saved")
 
 
 # ---------------------------- UI SETUP ------------------------------- #
