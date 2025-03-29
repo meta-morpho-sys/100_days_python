@@ -15,14 +15,14 @@ def save():
 
     # Validation
     entries = [website,username,pswd]
-    err_msg = "Please, don't leave any fields empty"
-    err_title = 'Empty Fields Warning'
-    empty_fields = [messagebox.showerror(title=err_title, message=err_msg) for entry in entries if "".__eq__(entry)]
+    empty_fields = [messagebox.showerror(
+        title='Empty Fields Warning',
+        message="Please, don't leave any fields empty") for entry in entries if "".__eq__(entry)]
     if not empty_fields:
-        new_entry = f"{website},{username},{pswd}\n"
         message = f"Are these entries correct?\n\nUsername: {username}\nPassword: {pswd}"
         is_ok = messagebox.askokcancel(title=website, message=message)
         if is_ok:
+            new_entry = f"{website},{username},{pswd}\n"
             with open('data.csv', 'a') as data:
                 data.write(new_entry)
             website_input.delete(0,END)
