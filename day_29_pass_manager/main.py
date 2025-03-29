@@ -5,6 +5,15 @@ FONT=('Arial', 10, 'bold')
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
+def save():
+    # Take values for all 3 inputs and store them in a file
+    # TODO: Password needs encryption
+    new_entry = f"{website_input.get()},{username_input.get()},{password_input.get()}\n"
+    with open('data.csv', 'a') as data:
+        data.write(new_entry)
+    website_input.delete(0,END)
+    password_input.delete(0,END)
+
 
 # ---------------------------- UI SETUP ------------------------------- #
 window = Tk()
@@ -27,8 +36,11 @@ password.grid(column=0, row=3, padx=5, pady=5)
 # Entry
 website_input = Entry(width=37)
 website_input.focus()
+
+
 website_input.grid(column=1, row=1, columnspan=2)
 username_input = Entry(width=37)
+username_input.insert(0, 'yuliya@banana.com')
 username_input.grid(column=1, row=2, columnspan=2)
 password_input = Entry(width=22, justify='left')
 password_input.grid(column=1, row=3)
@@ -37,7 +49,7 @@ password_input.grid(column=1, row=3)
 # Buttons
 password_gen = Button(text='Generate Password', font=FONT, width=12)
 password_gen.grid(column=2, row=3)
-add_details = Button(text='Add', font=FONT, width=35)
+add_details = Button(text='Add', font=FONT, width=35, command=save)
 add_details.grid(column=1, row=4, columnspan=2)
 
 window.mainloop()
