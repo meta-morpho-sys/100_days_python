@@ -16,7 +16,7 @@ def provide_password_string():
 def save():
     # Take values for all 3 inputs and store them in a file
     # TODO: Password needs encryption
-    website = website_input.get()
+    website = website_input.get().lower()
     username = username_input.get()
     pswd = password_input.get()
     new_data = {
@@ -32,18 +32,52 @@ def save():
         title='Empty Fields Warning',
         message="Please, don't leave any fields empty") for entry in entries if "".__eq__(entry)]
     if not empty_fields:
-        with open('data.json', 'r') as data_file:
-            # Read old data
-            data = json.load(data_file)
-            # Update old data with new data
-            data.update(new_data)
-        with open('data.json', 'w') as  data_file:
-            # Write new data
-            json.dump(data, data_file, indent=4)
+        try:
+            data = update_data_entry(new_data)
+        except FileNotFoundError:
+            create_data_entry(new_data)
+            messagebox.showinfo(message="Username and Password saved")
+        else:
+            create_data_entry(data)
+            messagebox.showinfo(message="Username and Password saved")
+        finally:
+            website_input.delete(0, END)
+            password_input.delete(0,END)
 
-        website_input.delete(0,END)
-        password_input.delete(0,END)
-        messagebox.showinfo(message="Username and Password saved")
+
+def create_data_entry(data):
+    with open('data.json', 'w') as data_file:
+        # Write new data
+        json.dump(data, data_file, indent=4)
+
+
+def update_data_entry(new_data):
+    with open('data.json', 'r') as data_file:
+        # Read old data
+        data = json.load(data_file)
+        # Update old data with new data
+        data.update(new_data)
+    return data
+
+# ---------------------------- FIND PASSWORD ------------------------------- #
+
+def search_password():
+    website = website_input.get().lower()
+    try:
+        with open('data.json', 'r') as search_data_file:
+            search_data = json.load(search_data_file)
+    except FileNotFoundError:
+        messagebox.showinfo(message="No Usernames and Passwords found.\nIs this the first time you are using your Password Manager?")
+    else:
+        if website in search_data:
+            username = search_data[website]['email']
+            pswd = search_data[website]['password']
+            messagebox.showinfo(message=f"Username is: {username}\nPassword is: {pswd}")
+        else:
+            messagebox.showinfo(f"No details for {website} website in your Password Manager.You can create it now")
+    finally:
+        website_input.delete(0, END)
+
 
 
 # ---------------------------- UI SETUP ------------------------------- #
@@ -65,9 +99,9 @@ password = Label(text='Password:', font=FONT, fg=LOGO_RED)
 password.grid(column=0, row=3, padx=5, pady=5)
 
 # Entry
-website_input = Entry(width=37)
+website_input = Entry(width=22)
 website_input.focus()
-website_input.grid(column=1, row=1, columnspan=2)
+website_input.grid(column=1, row=1)
 username_input = Entry(width=37)
 username_input.insert(0, 'yuliya@banana.com')
 username_input.grid(column=1, row=2, columnspan=2)
@@ -76,9 +110,11 @@ password_input.grid(column=1, row=3)
 
 
 # Buttons
-password_gen = Button(text='Generate Password', font=FONT, width=12, command=provide_password_string)
+password_gen = Button(text='Generate Password', fg=LOGO_RED, font=FONT, width=12, command=provide_password_string)
 password_gen.grid(column=2, row=3)
-add_details = Button(text='Add', font=FONT, width=35, command=save)
+add_details = Button(text='Add', fg=LOGO_RED, font=FONT, width=35, command=save)
 add_details.grid(column=1, row=4, columnspan=2)
+search_details = Button(text='Search', fg=LOGO_RED, font=FONT, width=12, command=search_password)
+search_details.grid(column=2, row=1)
 
 window.mainloop()
