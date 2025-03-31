@@ -1,9 +1,13 @@
 from tkinter import *
 from tkinter import messagebox
+from password_generator import generate_password
 
 LOGO_RED='#D84040'
 FONT=('Arial', 10, 'bold')
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
+def provide_password_string():
+    psswd = generate_password()
+    password_input.insert(0, psswd)
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 def save():
@@ -51,8 +55,6 @@ password.grid(column=0, row=3, padx=5, pady=5)
 # Entry
 website_input = Entry(width=37)
 website_input.focus()
-
-
 website_input.grid(column=1, row=1, columnspan=2)
 username_input = Entry(width=37)
 username_input.insert(0, 'yuliya@banana.com')
@@ -62,7 +64,7 @@ password_input.grid(column=1, row=3)
 
 
 # Buttons
-password_gen = Button(text='Generate Password', font=FONT, width=12)
+password_gen = Button(text='Generate Password', font=FONT, width=12, command=provide_password_string)
 password_gen.grid(column=2, row=3)
 add_details = Button(text='Add', font=FONT, width=35, command=save)
 add_details.grid(column=1, row=4, columnspan=2)
