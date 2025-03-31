@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import messagebox
 from password_generator import generate_password
 import pyperclip
+import json
 
 LOGO_RED='#D84040'
 FONT=('Arial', 10, 'bold')
@@ -18,6 +19,12 @@ def save():
     website = website_input.get()
     username = username_input.get()
     pswd = password_input.get()
+    new_data = {
+        website: {
+            'email': username,
+            'password': pswd
+        }
+    }
 
     # Validation
     entries = [website,username,pswd]
@@ -25,15 +32,18 @@ def save():
         title='Empty Fields Warning',
         message="Please, don't leave any fields empty") for entry in entries if "".__eq__(entry)]
     if not empty_fields:
-        message = f"Are these entries correct?\n\nUsername: {username}\nPassword: {pswd}"
-        is_ok = messagebox.askokcancel(title=website, message=message)
-        if is_ok:
-            new_entry = f"{website},{username},{pswd}\n"
-            with open('data.csv', 'a') as data:
-                data.write(new_entry)
-            website_input.delete(0,END)
-            password_input.delete(0,END)
-            messagebox.showinfo(message="Username and Password saved")
+        with open('data.json', 'r') as data_file:
+            # Read old data
+            data = json.load(data_file)
+            # Update old data with new data
+            data.update(new_data)
+        with open('data.json', 'w') as  data_file:
+            # Write new data
+            json.dump(data, data_file, indent=4)
+
+        website_input.delete(0,END)
+        password_input.delete(0,END)
+        messagebox.showinfo(message="Username and Password saved")
 
 
 # ---------------------------- UI SETUP ------------------------------- #
