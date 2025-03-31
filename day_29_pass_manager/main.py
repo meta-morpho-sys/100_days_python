@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import messagebox
 from password_generator import generate_password
+import pyperclip
 
 LOGO_RED='#D84040'
 FONT=('Arial', 10, 'bold')
@@ -8,6 +9,7 @@ FONT=('Arial', 10, 'bold')
 def provide_password_string():
     psswd = generate_password()
     password_input.insert(0, psswd)
+    pyperclip.copy(psswd)
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 def save():
