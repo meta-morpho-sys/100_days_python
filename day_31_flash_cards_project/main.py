@@ -13,7 +13,20 @@ data = pd.read_csv('data/french_words.csv')
 
 def pick_a_word():
     coupled_words = data.to_dict(orient='records')
-    print(coupled_words[randint(0, len(coupled_words))])
+    language_couple= (coupled_words[randint(0, len(coupled_words))])
+    # {french_lang=k, french_word=v for k,v in language_couple if k == "French"}
+    for lang,word in language_couple.items():
+        if lang == "French":
+            canvas.itemconfig(lang_text, text=lang)
+            print(lang)
+            canvas.itemconfig(word_text, text=word)
+            print(word)
+        else:
+            print(lang)
+            print(word)
+
+
+
 
 # ---------------------------- UI SETUP ------------------------------- #
 
@@ -24,8 +37,8 @@ window.config(padx=50, pady=50, bg=BACKGROUND_COLOR)
 canvas = Canvas(background=BACKGROUND_COLOR, width=900, height=600, highlightthickness=0)
 front_image = PhotoImage(file='images/card_front.png')
 canvas.create_image(460,300, image=front_image)
-canvas.create_text(460, 300, text='Word',font=WORD_FONT)
-canvas.create_text(460, 150, text='Language',font=LANGUAGE_FONT)
+word_text = canvas.create_text(460, 300, text='Word',font=WORD_FONT)
+lang_text = canvas.create_text(460, 150, text='Language',font=LANGUAGE_FONT)
 canvas.grid(row=0,column=0,columnspan=2)
 
 
