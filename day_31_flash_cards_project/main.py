@@ -36,8 +36,8 @@ window.config(padx=50, pady=50, bg=BACKGROUND_COLOR)
 canvas = Canvas(background=BACKGROUND_COLOR, width=900, height=600, highlightthickness=0)
 front_image = PhotoImage(file='images/card_front.png')
 canvas.create_image(460,300, image=front_image)
-word_lang_a_text = canvas.create_text(460, 300, text='Word', font=WORD_FONT)
-lang_a_text = canvas.create_text(460, 150, text='Language', font=LANGUAGE_FONT)
+word_lang_a_text = canvas.create_text(460, 300, text='', font=WORD_FONT)
+lang_a_text = canvas.create_text(460, 150, text='', font=LANGUAGE_FONT)
 canvas.grid(row=0,column=0,columnspan=2)
 
 
@@ -50,6 +50,6 @@ yes_button.grid(row=1,column=1)
 no_button = Button(image=wrong_image, highlightthickness=0, highlightbackground=BACKGROUND_COLOR, command=pick_a_word)
 no_button.grid(row=1,column=0)
 
-
+pick_a_word()
 
 window.mainloop()
