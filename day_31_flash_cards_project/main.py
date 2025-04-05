@@ -7,32 +7,35 @@ LANGUAGE_FONT = ('Arial', 30, 'italic')
 WORD_FONT = ('Arial', 60, 'bold')
 LANG_A = 'French'
 LANG_B = 'English'
+flip = None
 
 # ---------------------------- DISPLAY WORDS ------------------------------- #
 
 data = pd.read_csv('data/french_words.csv')
 
-def pick_a_word(lang=LANG_A):
+def pick_a_word(language=LANG_A):
     coupled_words = data.to_dict(orient='records')
     language_couple= choice(coupled_words)
-    for lang,word in language_couple.items():
-        if lang == LANG_A:
-            canvas.itemconfig(lang_text, text=lang, fill='black')
-            canvas.itemconfig(word_lang_text, text=word, fill='black')
-        # else:
-        #     print('been here!')
-        #     canvas.itemconfig(lang_text, text=lang, fill='white')
-        #     canvas.itemconfig(word_lang_text, text=word, fill='white')
+    if language == LANG_A:
+        word= language_couple[LANG_A]
+        canvas.itemconfig(lang_text, text=LANG_A, fill='black')
+        canvas.itemconfig(word_lang_text, text=word, fill='black')
+    else:
+        word = language_couple[LANG_B]
+        canvas.itemconfig(lang_text, text=LANG_B, fill='white')
+        canvas.itemconfig(word_lang_text, text=word, fill='white')
 
 
 
 #---------------------------- FLIP THE CARDS ------------------------------- #
 
 def flip_card():
-    canvas.after(3000, display_lang_b)
+    global flip
+    flip = canvas.after(3000, display_lang_b)
 #
 def display_lang_b():
     canvas.itemconfig(canvas_image, image=back_image)
+    pick_a_word(LANG_B)
 
 
 # ---------------------------- UI SETUP ------------------------------- #
@@ -59,7 +62,7 @@ yes_button.grid(row=1,column=1)
 no_button = Button(image=wrong_image, highlightthickness=0, highlightbackground=BACKGROUND_COLOR, command=pick_a_word)
 no_button.grid(row=1,column=0)
 
-pick_a_word(LANG_A)
+pick_a_word()
 flip_card()
 
 window.mainloop()
