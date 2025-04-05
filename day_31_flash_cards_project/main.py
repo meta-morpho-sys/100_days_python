@@ -6,6 +6,8 @@ from random import *
 BACKGROUND_COLOR = "#B1DDC6"
 LANGUAGE_FONT = ('Arial', 30, 'italic')
 WORD_FONT = ('Arial', 60, 'bold')
+LANG_A = 'French'
+LANG_B = 'English'
 
 # ---------------------------- MECHANISM TO DISPLAY WORDS ------------------------------- #
 
@@ -13,14 +15,11 @@ data = pd.read_csv('data/french_words.csv')
 
 def pick_a_word():
     coupled_words = data.to_dict(orient='records')
-    language_couple= (coupled_words[randint(0, len(coupled_words))])
-    # {french_lang=k, french_word=v for k,v in language_couple if k == "French"}
+    language_couple= choice(coupled_words)
     for lang,word in language_couple.items():
-        if lang == "French":
-            canvas.itemconfig(lang_text, text=lang)
-            print(lang)
-            canvas.itemconfig(word_text, text=word)
-            print(word)
+        if lang == LANG_A:
+            canvas.itemconfig(lang_a_text, text=lang)
+            canvas.itemconfig(word_lang_a_text, text=word)
         else:
             print(lang)
             print(word)
@@ -37,8 +36,8 @@ window.config(padx=50, pady=50, bg=BACKGROUND_COLOR)
 canvas = Canvas(background=BACKGROUND_COLOR, width=900, height=600, highlightthickness=0)
 front_image = PhotoImage(file='images/card_front.png')
 canvas.create_image(460,300, image=front_image)
-word_text = canvas.create_text(460, 300, text='Word',font=WORD_FONT)
-lang_text = canvas.create_text(460, 150, text='Language',font=LANGUAGE_FONT)
+word_lang_a_text = canvas.create_text(460, 300, text='Word', font=WORD_FONT)
+lang_a_text = canvas.create_text(460, 150, text='Language', font=LANGUAGE_FONT)
 canvas.grid(row=0,column=0,columnspan=2)
 
 
