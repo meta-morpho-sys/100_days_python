@@ -14,10 +14,10 @@ flip = None
 data = pd.read_csv('data/french_words.csv')
 
 def pick_a_word(language=LANG_A):
-    coupled_words = data.to_dict(orient='records')
-    language_couple= choice(coupled_words)
+    language_data = data.to_dict(orient='records')
+    language_couple= choice(language_data)
     if language == LANG_A:
-        word= language_couple[LANG_A]
+        word = language_couple[LANG_A]
         canvas.itemconfig(lang_text, text=LANG_A, fill='black')
         canvas.itemconfig(word_lang_text, text=word, fill='black')
     else:
@@ -31,9 +31,10 @@ def pick_a_word(language=LANG_A):
 
 def flip_card():
     global flip
-    flip = canvas.after(3000, display_lang_b)
+    flip = window.after(3000, display_back)
+
 #
-def display_lang_b():
+def display_back():
     canvas.itemconfig(canvas_image, image=back_image)
     pick_a_word(LANG_B)
 
