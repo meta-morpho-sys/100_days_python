@@ -7,43 +7,42 @@ LANGUAGE_FONT = ('Arial', 30, 'italic')
 WORD_FONT = ('Arial', 60, 'bold')
 LANG_A = 'French'
 LANG_B = 'English'
+current_language = LANG_A
 flip = None
 
+data = pd.read_csv('data/french_words.csv')
+language_data = data.to_dict(orient='records')
+language_couple = {}
 # ---------------------------- DISPLAY WORDS ------------------------------- #
 
-data = pd.read_csv('data/french_words.csv')
-
-def pick_a_word(language=LANG_A):
-    language_data = data.to_dict(orient='records')
-    language_couple= choice(language_data)
-    if language == LANG_A:
-        word = language_couple[LANG_A]
-        canvas.itemconfig(lang_text, text=LANG_A, fill='black')
-        canvas.itemconfig(word_lang_text, text=word, fill='black')
-    else:
-        word = language_couple[LANG_B]
-        canvas.itemconfig(lang_text, text=LANG_B, fill='white')
-        canvas.itemconfig(word_lang_text, text=word, fill='white')
-
-
+def pick_a_word():
+    global language_couple, flip_timer
+    window.after_cancel(flip_timer)
+    language_couple = choice(language_data)
+    word = language_couple[LANG_A]
+    canvas.itemconfig(canvas_image, image=front_image)
+    canvas.itemconfig(lang_text, text=LANG_A, fill='black')
+    canvas.itemconfig(word_lang_text, text=word, fill='black')
+    flip_timer = window.after(3000, flip_card)
 
 #---------------------------- FLIP THE CARDS ------------------------------- #
 
-def flip_card():
-    global flip
-    flip = window.after(3000, display_back)
-
 #
-def display_back():
+def flip_card():
     canvas.itemconfig(canvas_image, image=back_image)
-    pick_a_word(LANG_B)
+    word = language_couple[LANG_B]
+    canvas.itemconfig(lang_text, text=LANG_B, fill='white')
+    canvas.itemconfig(word_lang_text, text=word, fill='white')
+
 
 
 # ---------------------------- UI SETUP ------------------------------- #
 
 window = Tk()
-window.title("Flash Cards")
+window.title(f"Learn {LANG_A} With Flash Cards")
 window.config(padx=50, pady=50, bg=BACKGROUND_COLOR)
+
+flip_timer = window.after(3000, flip_card)
 
 canvas = Canvas(background=BACKGROUND_COLOR, width=900, height=600, highlightthickness=0)
 front_image = PhotoImage(file='images/card_front.png')
@@ -64,6 +63,7 @@ no_button = Button(image=wrong_image, highlightthickness=0, highlightbackground=
 no_button.grid(row=1,column=0)
 
 pick_a_word()
-flip_card()
+
+
 
 window.mainloop()
