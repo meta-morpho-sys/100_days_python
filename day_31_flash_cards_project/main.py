@@ -5,25 +5,26 @@ from random import *
 BACKGROUND_COLOR = "#B1DDC6"
 LANGUAGE_FONT = ('Arial', 30, 'italic')
 WORD_FONT = ('Arial', 60, 'bold')
+PROGRESS_FONT = ('Georgia', 15, 'italic')
 LANG_A = 'French'
 LANG_B = 'English'
 current_language = LANG_A
 language_couple = {}
 
 # ---------------------------- MANAGE USER PROGRESS ------------------------------- #
-# data = pd.read_csv('data/french_words.csv')
-data = pd.read_csv('data/3_french_words.csv')
+data = pd.read_csv('data/french_words.csv')
 words_to_learn = data.to_dict(orient='records')
 
 def save_progress():
-    print(language_couple)
     words_to_learn.remove(language_couple)
-    print(f"{len(words_to_learn)} words to learn")
+    canvas2.itemconfig(progress_text, text=f"{len(words_to_learn)} more words to learn")
     data_to_save = pd.DataFrame(words_to_learn)
     data_to_save.to_csv('words_to_learn.csv')
     if len(words_to_learn) < 1:
-        print(f"Congrats, You learned all {len(data)} entries")
-        exit()
+        canvas2.itemconfig(progress_text, text=f"Congrats, you learned all {len(data)} entries!!!")
+
+def end_game():
+    exit()
 
 # ---------------------------- DISPLAY WORDS ------------------------------- #
 def pick_a_word():
@@ -56,7 +57,12 @@ back_image = PhotoImage(file='images/card_back.png')
 canvas_image = canvas.create_image(460,300, image=front_image)
 lang_text = canvas.create_text(460, 150, text='', fill='black', font=LANGUAGE_FONT)
 word_lang_text = canvas.create_text(460, 300, text='', fill='black', font=WORD_FONT)
-canvas.grid(row=0,column=0,columnspan=2)
+canvas.grid(row=1,column=0,columnspan=2)
+
+# Progress
+canvas2 = Canvas(background=BACKGROUND_COLOR, width=400, height=30, highlightthickness=20)
+progress_text = canvas2.create_text(250, 30, text='', fill='black', font=PROGRESS_FONT)
+canvas2.grid(row=0,column=1, columnspan=2)
 
 
 # Buttons
@@ -77,6 +83,15 @@ no_button = Button(
     command=pick_a_word
 )
 no_button.grid(row=1,column=0)
+
+exit_button = Button(
+    text='End Game',
+    font=PROGRESS_FONT,
+    fg='white',
+    # bg='black',
+    highlightthickness=0,
+command=end_game)
+exit_button.grid(row=1,column=2)
 
 pick_a_word()
 
