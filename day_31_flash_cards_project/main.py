@@ -9,16 +9,27 @@ LANG_A = 'French'
 LANG_B = 'English'
 current_language = LANG_A
 language_couple = {}
-current_word = ''
 
-data = pd.read_csv('data/french_words.csv')
-language_data = data.to_dict(orient='records')
-language_couple = {}
+# ---------------------------- MANAGE USER PROGRESS ------------------------------- #
+# data = pd.read_csv('data/french_words.csv')
+data = pd.read_csv('data/3_french_words.csv')
+words_to_learn = data.to_dict(orient='records')
+
+def save_progress():
+    print(language_couple)
+    words_to_learn.remove(language_couple)
+    print(f"{len(words_to_learn)} words to learn")
+    data_to_save = pd.DataFrame(words_to_learn)
+    data_to_save.to_csv('words_to_learn.csv')
+    if len(words_to_learn) < 1:
+        print(f"Congrats, You learned all {len(data)} entries")
+        exit()
+
 # ---------------------------- DISPLAY WORDS ------------------------------- #
 def pick_a_word():
-    global language_couple, flip_timer, current_word
+    global language_couple, flip_timer
     window.after_cancel(flip_timer)
-    language_couple = choice(language_data)
+    language_couple = choice(words_to_learn)
     current_word = language_couple[LANG_A]
     canvas.itemconfig(canvas_image, image=front_image)
     canvas.itemconfig(lang_text, text=LANG_A, fill='black')
@@ -51,10 +62,20 @@ canvas.grid(row=0,column=0,columnspan=2)
 # Buttons
 right_image = PhotoImage(file='images/right.png')
 wrong_image = PhotoImage(file='images/wrong.png')
-yes_button = Button(image=right_image, highlightthickness=0, highlightbackground=BACKGROUND_COLOR, command=pick_a_word)
+yes_button = Button(
+    image=right_image,
+    highlightthickness=0,
+    highlightbackground=BACKGROUND_COLOR,
+    command= lambda:[save_progress(), pick_a_word()]
+    )
 yes_button.grid(row=1,column=1)
 
-no_button = Button(image=wrong_image, highlightthickness=0, highlightbackground=BACKGROUND_COLOR, command=pick_a_word)
+no_button = Button(
+    image=wrong_image,
+    highlightthickness=0,
+    highlightbackground=BACKGROUND_COLOR,
+    command=pick_a_word
+)
 no_button.grid(row=1,column=0)
 
 pick_a_word()
