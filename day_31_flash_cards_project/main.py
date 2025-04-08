@@ -1,34 +1,47 @@
 from tkinter import *
 import pandas as pd
 from random import *
+import os
 
 BACKGROUND_COLOR = "#B1DDC6"
 LANGUAGE_FONT = ('Arial', 30, 'italic')
-WORD_FONT = ('Arial', 60, 'bold')
+WORD_FONT = ('Arial', 45, 'bold')
 PROGRESS_FONT = ('Georgia', 15, 'italic')
 LANG_A = 'French'
 LANG_B = 'English'
 current_language = LANG_A
 language_couple = {}
+words_to_learn = []
+PROGRESS_FILE = 'data/words_to_learn.csv'
+data = None
 
 # ---------------------------- MANAGE USER PROGRESS ------------------------------- #
-data = pd.read_csv('data/french_words.csv')
-words_to_learn = data.to_dict(orient='records')
+def start_game():
+    global words_to_learn, data
+
+    if os.path.exists(PROGRESS_FILE):
+        data = pd.read_csv(PROGRESS_FILE)
+    else:
+        data = pd.read_csv('data/french_words.csv')
+        # data = pd.read_csv('data/3_french_words.csv')
+    words_to_learn = data.to_dict(orient='records')
 
 def save_progress():
+    global words_to_learn, data
     words_to_learn.remove(language_couple)
     canvas2.itemconfig(progress_text, text=f"{len(words_to_learn)} more words to learn")
     data_to_save = pd.DataFrame(words_to_learn)
-    data_to_save.to_csv('words_to_learn.csv')
-    if len(words_to_learn) < 1:
+    data_to_save.to_csv('data/words_to_learn.csv')
+    if len(words_to_learn) == 0:
         canvas2.itemconfig(progress_text, text=f"Congrats, you learned all {len(data)} entries!!!")
+        os.remove(PROGRESS_FILE)
 
 def end_game():
     exit()
 
 # ---------------------------- DISPLAY WORDS ------------------------------- #
 def pick_a_word():
-    global language_couple, flip_timer
+    global language_couple, flip_timer, words_to_learn
     window.after_cancel(flip_timer)
     language_couple = choice(words_to_learn)
     current_word = language_couple[LANG_A]
@@ -60,8 +73,8 @@ word_lang_text = canvas.create_text(460, 300, text='', fill='black', font=WORD_F
 canvas.grid(row=1,column=0,columnspan=2)
 
 # Progress
-canvas2 = Canvas(background=BACKGROUND_COLOR, width=400, height=30, highlightthickness=20)
-progress_text = canvas2.create_text(250, 30, text='', fill='black', font=PROGRESS_FONT)
+canvas2 = Canvas(background=BACKGROUND_COLOR, width=400, height=30, highlightthickness=0)
+progress_text = canvas2.create_text(220, 10, text='', fill='black', font=PROGRESS_FONT)
 canvas2.grid(row=0,column=1, columnspan=2)
 
 
@@ -87,14 +100,15 @@ no_button.grid(row=1,column=0)
 exit_button = Button(
     text='End Game',
     font=PROGRESS_FONT,
-    fg='white',
+    fg='black',
     # bg='black',
     highlightthickness=0,
 command=end_game)
 exit_button.grid(row=1,column=2)
 
-pick_a_word()
 
+start_game()
+pick_a_word()
 
 
 window.mainloop()
