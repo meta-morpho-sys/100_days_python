@@ -2,4 +2,6 @@
 *.pyc
 .DS_Store
 .python-version
+*.sec.sh
+
 
