@@ -1,11 +1,8 @@
 Dear [NAME],
 
-
-I know it's not your birthday today but this is just a test email I am sending from a program I wrote in Python as part of my studies :-)
-
-Soooo.....
-
-It's your birthday! Have a great day!
+Happy Birthday!
+May today be a bright reminder of all the good things life has to offer.
+Celebrate big and soak up every special moment!
 
 All my love,
 
