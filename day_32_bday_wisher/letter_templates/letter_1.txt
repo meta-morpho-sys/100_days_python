@@ -1,0 +1,11 @@
+Dear [NAME],
+
+I know it's not your birthday today but this is just a test email I am sending from a program I wrote in Python as part of my studies :-)
+
+Soooo.....
+
+Happy birthday!
+
+All the best for the year!
+
+Yuliya
