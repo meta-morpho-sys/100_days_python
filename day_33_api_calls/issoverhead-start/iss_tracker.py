@@ -5,14 +5,14 @@ import requests
 from datetime import datetime
 import os
 import smtplib
-
+import folium
 
 MY_LAT = 51.789018
 MY_LONG = -1.484935
 
 
 sender_username = 'yuliya.nedyalkova777@gmail.com'
-sender_password = os.getenv('BDAY_WISHER_PASS')
+sender_password = os.getenv('GMAIL_SERVICE_PASS')
 weather_api_key = os.getenv('OPEN_WEATHER_API_KEY')
 
 logging.basicConfig(level=logging.INFO, format="[%(levelname)s] %(message)s")
@@ -34,11 +34,11 @@ def is_iss_near():
     if MY_LAT + positive_offset >= iss_latitude >= MY_LAT + negative_offset and MY_LONG + positive_offset >= iss_longitude >= MY_LONG + negative_offset:
         print('ISS is close!')
         print(f"ISS is in {iss_coordinates}")
-        return True
+        return True, iss_coordinates
     else:
         print('ISS is out of range!')
         print(f"ISS is in {iss_coordinates}")
-        return False
+        return False, iss_coordinates
 
 def is_dark():
     parameters = {
@@ -76,6 +76,13 @@ def is_clear_sky():
         print(f"The weather is not good for observation: {current_weather_state}")
         return False
 
+def plot_on_map():
+    _, coordinates = is_iss_near()
+    m = folium.Map(location=coordinates, zoom_start=4)
+    folium.Marker(location=coordinates, popup="Current Location").add_to(m)
+    m.save("current_location.html")
+
+
 
 def send_mail():
     with smtplib.SMTP("smtp.gmail.com") as conn:
@@ -86,6 +93,7 @@ def send_mail():
         conn.close()
 
 while True:
+    plot_on_map()
     if is_iss_near() and is_dark():
         if is_clear_sky():
             send_mail()

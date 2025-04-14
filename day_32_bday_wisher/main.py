@@ -15,7 +15,7 @@ import pandas as pd
 today = dt.date.today()
 year = today.year
 SENDER_EMAIL = "yuliya.nedyalkova777@gmail.com"
-PASSWORD = os.getenv('BDAY_WISHER_PASS')
+PASSWORD = os.getenv('GMAIL_SERVICE_PASS')
 
 
 # ------------------------------ PREP DATA ------------------------------ #
