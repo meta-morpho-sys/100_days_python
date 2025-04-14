@@ -1,3 +1,6 @@
+import logging
+import time
+
 import requests
 from datetime import datetime
 import os
@@ -12,10 +15,11 @@ sender_username = 'yuliya.nedyalkova777@gmail.com'
 sender_password = os.getenv('BDAY_WISHER_PASS')
 weather_api_key = os.getenv('OPEN_WEATHER_API_KEY')
 
-
+logging.basicConfig(level=logging.INFO, format="[%(levelname)s] %(message)s")
 
 
 def is_iss_near():
+    logging.info("Checking if ISS is near")
     response = requests.get(url="http://api.open-notify.org/iss-now.json")
     response.raise_for_status()
     iss_data = response.json()
@@ -42,7 +46,7 @@ def is_dark():
         "lng": MY_LONG,
         "formatted": 0,
     }
-
+    logging.info("Checking for nighttime")
     response = requests.get("https://api.sunrise-sunset.org/json", params=parameters)
     response.raise_for_status()
     sun_position_data = response.json()
@@ -61,6 +65,7 @@ def is_dark():
         return  False
 
 def is_clear_sky():
+    logging.info("Checking for sky conditions and visibility")
     weather_response = requests.get(f"https://api.openweathermap.org/data/2.5/weather?lat={MY_LAT}&lon={MY_LONG}&appid={weather_api_key}&units=metric")
     data = weather_response.json()
     current_weather_state = data['weather'][0]['description']
@@ -80,15 +85,11 @@ def send_mail():
         print("email sent")
         conn.close()
 
+while True:
+    if is_iss_near() and is_dark():
+        if is_clear_sky():
+            send_mail()
+    time.sleep(60)
 
-#If the ISS is close to my current position
-# and it is currently dark
-# Then send me an email to tell me to look up.
-
-if is_clear_sky() and is_dark():
-    if is_iss_near():
-        send_mail()
-
-# BONUS: run the code every 60 seconds.
 
 
