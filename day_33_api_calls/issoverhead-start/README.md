@@ -20,28 +20,33 @@ Install the required Python packages:
 
 ```bash
 pip install requests folium
+```
+
 🔧 Environment Variables
 Before running the script, set the following environment variables:
 
-Variable Name	Description
-GMAIL_SERVICE_PASS	Your Gmail App Password (not your main password)
-OPEN_WEATHER_API_KEY	API key from OpenWeatherMap
+| Variable Name           | Description                                  |
+|------------------------|----------------------------------------------|
+| `GMAIL_SERVICE_PASS`   | Your Gmail App Password (not your main password) |
+| `OPEN_WEATHER_API_KEY` | API key from [OpenWeatherMap](https://openweathermap.org/api) |
+
+---
+
 📍 Configuration
 Update these constants and variables in the script to your own coordinates:
 
-python
-Copy
-Edit
+```python
 MY_LAT = 51.789018       # Your latitude
 MY_LONG = -1.484935      # Your longitude
-sender_username = "your_email@example.com" The username of the account (gmail, hotmail, etc) from and to which the email will be sent out. (At the moment the program is used to send an email to yourself)
+sender_username = "your_email@example.com" # The username of the account (gmail, hotmail, etc) from and to which the email will be sent out. (At the moment the program is used to send an email to yourself)
+```
 📤 How to Use
 Just run the script:
 
-bash
-Copy
-Edit
+```bash
 python iss_tracker.py
+```
+
 The script will:
 
 Check if the ISS is within ~5 degrees of your location.
@@ -54,6 +59,8 @@ If all checks pass, it sends you an email.
 
 Every 60 seconds, it updates the ISS location on a map (current_location.html).
 
+---
+
 📧 Email Notification Setup
 You need to enable "App Passwords" on your Gmail account:
 
@@ -63,17 +70,25 @@ Generate an App Password from Google Account > Security > App passwords.
 
 Use this password in the GMAIL_SERVICE_PASS environment variable.
 
+---
+
 🛑 Stop the Script
 The script runs indefinitely. Use CTRL+C in the terminal to stop it.
+
+---
 
 🗺️ Output
 current_location.html – A browser-viewable map showing the current location of the ISS.
 
+---
+
 🧠 Future Ideas
+Input parameters for LAT, LON and email addresses
+
 Add Slack or SMS notifications.
 
 Display ISS trajectory or trail.
 
 Deploy as a web dashboard with Flask or Dash.
 
-Made with 🌍 and 🚀 by Yuliya.
+Made with 🌍 and 🚀 by Yuliya, inspired by https://www.udemy.com/course/100-days-of-code/.
