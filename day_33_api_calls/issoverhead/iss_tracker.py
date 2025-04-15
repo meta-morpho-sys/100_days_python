@@ -1,22 +1,18 @@
 import logging as log
 import time
-
 import requests
 from datetime import datetime
 import os
 import smtplib
-import app
+
+log.basicConfig(level=log.INFO, format="[%(levelname)s : %(asctime)s] %(message)s")
 
 MY_LAT = 51.789018
 MY_LONG = -1.484935
 
-
-
 sender_username = 'yuliya.nedyalkova777@gmail.com'
 sender_password = os.getenv('GMAIL_SERVICE_PASS')
 weather_api_key = os.getenv('OPEN_WEATHER_API_KEY')
-
-log.basicConfig(level=log.INFO, format="[%(levelname)s : %(asctime)s] %(message)s")
 
 
 def is_iss_near():
@@ -91,7 +87,6 @@ def send_mail():
             conn.close()
 
 if __name__ == "__main__":
-    app.app.run(debug=True, port=8051)
     while True:
         if is_iss_near() and is_dark():
             if is_clear_sky():

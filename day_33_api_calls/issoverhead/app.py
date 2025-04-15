@@ -51,3 +51,6 @@ def update_iss_location(n):
         height=600
     )
     return fig
+
+if __name__ == "__main__":
+    app.app.run(debug=True, port=8051)

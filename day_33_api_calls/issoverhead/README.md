@@ -19,7 +19,7 @@ This Python script checks if the International Space Station (ISS) is currently 
 Install the required Python packages:
 
 ```bash
-pip install requests dash plotly
+pip install -r requirements.txt
 ```
 
 🔧 Environment Variables
