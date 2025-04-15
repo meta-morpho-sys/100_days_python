@@ -6,9 +6,13 @@ from datetime import datetime
 import os
 import smtplib
 import folium
+import subprocess
+from pathlib import Path
 
 MY_LAT = 51.789018
 MY_LONG = -1.484935
+THIS_FOLDER = Path(__file__).parent.resolve()
+
 
 
 sender_username = 'yuliya.nedyalkova777@gmail.com'
@@ -81,8 +85,14 @@ def plot_on_map():
     m = folium.Map(location=coordinates, zoom_start=4)
     folium.Marker(location=coordinates, popup="Current Location").add_to(m)
     m.save("current_location.html")
-
-
+    my_plot_file = f"{THIS_FOLDER}/current_location.html"
+    try: # should work on Windows
+        os.startfile(my_plot_file)
+    except AttributeError:
+        try: # should work on MacOS and most linux versions
+            subprocess.call(['open', my_plot_file])
+        except:
+            print('Could not open URL')
 
 def send_mail():
     with smtplib.SMTP("smtp.gmail.com") as conn:
