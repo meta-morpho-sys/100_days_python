@@ -1,4 +1,4 @@
-import logging
+import logging as log
 import time
 
 import requests
@@ -19,11 +19,11 @@ sender_username = 'yuliya.nedyalkova777@gmail.com'
 sender_password = os.getenv('GMAIL_SERVICE_PASS')
 weather_api_key = os.getenv('OPEN_WEATHER_API_KEY')
 
-logging.basicConfig(level=logging.INFO, format="[%(levelname)s] %(message)s")
+log.basicConfig(level=log.INFO, format="[%(levelname)s : %(asctime)s] %(message)s")
 
 
 def is_iss_near():
-    logging.info("Checking if ISS is near")
+    log.info("Checking if ISS is near")
     response = requests.get(url="http://api.open-notify.org/iss-now.json")
     response.raise_for_status()
     iss_data = response.json()
@@ -36,12 +36,10 @@ def is_iss_near():
     negative_offset = -5
 
     if MY_LAT + positive_offset >= iss_latitude >= MY_LAT + negative_offset and MY_LONG + positive_offset >= iss_longitude >= MY_LONG + negative_offset:
-        print('ISS is close!')
-        print(f"ISS is in {iss_coordinates}")
+        log.info(f'ISS is close! Coordinates: {iss_coordinates}')
         return True, iss_coordinates
     else:
-        print('ISS is out of range!')
-        print(f"ISS is in {iss_coordinates}")
+        log.info(f'ISS is out of range!Coordinates: {iss_coordinates}')
         return False, iss_coordinates
 
 def is_dark():
@@ -50,7 +48,7 @@ def is_dark():
         "lng": MY_LONG,
         "formatted": 0,
     }
-    logging.info("Checking for nighttime")
+    log.info("Checking for nighttime")
     response = requests.get("https://api.sunrise-sunset.org/json", params=parameters)
     response.raise_for_status()
     sun_position_data = response.json()
@@ -62,22 +60,22 @@ def is_dark():
 
 
     if current_hour >= sunset or current_hour <= sunrise:
-        print("It's dark")
+        log.info("It's dark")
         return True
     else:
-        print("It's daylight")
+        log.info("It's daylight")
         return  False
 
 def is_clear_sky():
-    logging.info("Checking for sky conditions and visibility")
+    log.info("Checking for sky conditions and visibility")
     weather_response = requests.get(f"https://api.openweathermap.org/data/2.5/weather?lat={MY_LAT}&lon={MY_LONG}&appid={weather_api_key}&units=metric")
     data = weather_response.json()
     current_weather_state = data['weather'][0]['description']
     if current_weather_state == 'few clouds' or current_weather_state == 'clear sky':
-        print(f"Good weather today with {current_weather_state}")
+        log.info(f"Good weather today with {current_weather_state}")
         return True
     else:
-        print(f"The weather is not good for observation: {current_weather_state}")
+        log.info(f"The weather is not good for observation: {current_weather_state}")
         return False
 
 def plot_on_map():
@@ -92,7 +90,7 @@ def plot_on_map():
         try: # should work on MacOS and most linux versions
             subprocess.call(['open', my_plot_file])
         except:
-            print('Could not open URL')
+            log.error('Could not open URL')
 
 def send_mail():
     with smtplib.SMTP("smtp.gmail.com") as conn:
