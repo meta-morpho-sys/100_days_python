@@ -95,13 +95,20 @@ def plot_on_map():
 def send_mail():
     with smtplib.SMTP("smtp.gmail.com") as conn:
         conn.starttls()
-        conn.login(sender_username, sender_password)
-        conn.sendmail(sender_username,sender_username, "Subject:\n\n Yuliya ISS is near. Look up now!!!")
-        print("email sent")
-        conn.close()
+        try:
+            conn.login(sender_username, sender_password)
+        except smtplib.SMTPResponseException as e:
+            log.error("Couldn't send email.Please set up your Gmail App Password")
+            log.error(e)
+        else:
+            conn.sendmail(sender_username,sender_username, "Subject:\n\n Yuliya ISS is near. Look up now!!!")
+            log.info("email sent")
+        finally:
+            conn.close()
 
+
+plot_on_map()
 while True:
-    plot_on_map()
     if is_iss_near() and is_dark():
         if is_clear_sky():
             send_mail()
