@@ -12,6 +12,8 @@ server = app.server
 app.layout = html.Div([
     html.H1("🛰️ ISS Live Tracker", style={"textAlign": "center"}),
     dcc.Graph(id='iss-map'),
+    html.H4("This map shows the real-time location  of the International Space Station (ISS).\n Updates every 60 seconds.",
+            style={"textAlign": "center", "marginTop": "20px"}),
     dcc.Interval(id='interval-component', interval=60*1000, n_intervals=0)  # update every 60 seconds
 ])
 
@@ -44,6 +46,8 @@ def update_iss_location(n):
             showland=True,
             landcolor='rgb(243, 243, 243)',
             showcountries=True,
+            countrywidth=1,
+            countrycolor='red',
             lataxis_range=[-90, 90],
             lonaxis_range=[-180, 180],
         ),
