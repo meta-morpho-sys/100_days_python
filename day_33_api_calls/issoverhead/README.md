@@ -1,6 +1,6 @@
 # 👩‍🚀 ISS Tracker and Notifier
 
-This Python script checks if the International Space Station (ISS) is currently flying over your location **at night and during clear skies** — and notifies you via email when the conditions are just right to observe it. It also plots the current ISS location on a live map using Folium.
+This Python script checks if the International Space Station (ISS) is currently flying over your location **at night and during clear skies** — and notifies you via email when the conditions are just right to observe it. It also plots the current ISS location on a live map using Dash.
 
 ---
 
@@ -9,7 +9,7 @@ This Python script checks if the International Space Station (ISS) is currently 
 - 🔭 Tracks the real-time position of the ISS.
 - 🌙 Checks if it's currently dark at your location.
 - 🌤️ Evaluates if the weather is clear (ideal for viewing the ISS).
-- 🗺️ Plots the current ISS location on a live-updating map (`current_location.html`).
+- 🗺️ Plots the current ISS location on a live-updating map.
 - 📧 Sends you an email notification when the ISS is visible from your location.
 
 ---
@@ -19,7 +19,7 @@ This Python script checks if the International Space Station (ISS) is currently 
 Install the required Python packages:
 
 ```bash
-pip install requests folium
+pip install requests dash plotly
 ```
 
 🔧 Environment Variables
@@ -46,6 +46,11 @@ Just run the script:
 ```bash
 python iss_tracker.py
 ```
+Dash server will start and output
+```bash
+Dash is running on http://127.0.0.1:8051/
+```
+open the link and start tracking the ISS live. 
 
 The script will:
 
@@ -57,7 +62,7 @@ Check if the sky is clear.
 
 If all checks pass, it sends you an email.
 
-Every 60 seconds, it updates the ISS location on a map (current_location.html).
+Every 60 seconds, it updates the ISS location on the map.
 
 ---
 
@@ -83,7 +88,7 @@ current_location.html – A browser-viewable map showing the current location of
 ---
 
 🧠 Future Ideas
-Input parameters for LAT, LON and email addresses
+Input parameters for LAT, LON and email address(es)
 
 Add Slack or SMS notifications.
 

@@ -5,13 +5,10 @@ import requests
 from datetime import datetime
 import os
 import smtplib
-import folium
-import subprocess
-from pathlib import Path
+import app
 
 MY_LAT = 51.789018
 MY_LONG = -1.484935
-THIS_FOLDER = Path(__file__).parent.resolve()
 
 
 
@@ -39,7 +36,7 @@ def is_iss_near():
         log.info(f'ISS is close! Coordinates: {iss_coordinates}')
         return True, iss_coordinates
     else:
-        log.info(f'ISS is out of range!Coordinates: {iss_coordinates}')
+        log.info(f'ISS is out of range! Coordinates: {iss_coordinates}')
         return False, iss_coordinates
 
 def is_dark():
@@ -78,19 +75,6 @@ def is_clear_sky():
         log.info(f"The weather is not good for observation: {current_weather_state}")
         return False
 
-def plot_on_map():
-    _, coordinates = is_iss_near()
-    m = folium.Map(location=coordinates, zoom_start=4)
-    folium.Marker(location=coordinates, popup="Current Location").add_to(m)
-    m.save("current_location.html")
-    my_plot_file = f"{THIS_FOLDER}/current_location.html"
-    try: # should work on Windows
-        os.startfile(my_plot_file)
-    except AttributeError:
-        try: # should work on MacOS and most linux versions
-            subprocess.call(['open', my_plot_file])
-        except:
-            log.error('Could not open URL')
 
 def send_mail():
     with smtplib.SMTP("smtp.gmail.com") as conn:
@@ -106,13 +90,13 @@ def send_mail():
         finally:
             conn.close()
 
-
-plot_on_map()
-while True:
-    if is_iss_near() and is_dark():
-        if is_clear_sky():
-            send_mail()
-    time.sleep(60)
+if __name__ == "__main__":
+    app.app.run(debug=True, port=8051)
+    while True:
+        if is_iss_near() and is_dark():
+            if is_clear_sky():
+                send_mail()
+        time.sleep(60)
 
 
 
