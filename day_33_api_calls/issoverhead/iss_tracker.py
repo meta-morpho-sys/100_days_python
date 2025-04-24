@@ -30,10 +30,10 @@ def is_iss_near():
 
     if MY_LAT + positive_offset >= iss_latitude >= MY_LAT + negative_offset and MY_LONG + positive_offset >= iss_longitude >= MY_LONG + negative_offset:
         log.info(f'ISS is close! Coordinates: {iss_coordinates}')
-        return True, iss_coordinates
+        return True
     else:
         log.info(f'ISS is out of range! Coordinates: {iss_coordinates}')
-        return False, iss_coordinates
+        return False
 
 def is_dark():
     parameters = {
@@ -87,11 +87,8 @@ def send_mail():
             conn.close()
 
 if __name__ == "__main__":
-    while True:
-        if is_iss_near() and is_dark():
-            if is_clear_sky():
-                send_mail()
+    while is_dark():
+        status = is_iss_near()
+        if is_iss_near() and is_clear_sky():
+            send_mail()
         time.sleep(60)
-
-
-
