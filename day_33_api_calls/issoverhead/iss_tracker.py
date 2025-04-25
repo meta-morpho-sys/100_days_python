@@ -5,7 +5,6 @@ from datetime import datetime
 import os
 import smtplib
 
-log.basicConfig(level=log.INFO, format="[%(levelname)s : %(asctime)s] %(message)s")
 
 MY_LAT = 51.789018
 MY_LONG = -1.484935
@@ -13,6 +12,8 @@ MY_LONG = -1.484935
 sender_username = 'yuliya.nedyalkova777@gmail.com'
 sender_password = os.getenv('GMAIL_SERVICE_PASS')
 weather_api_key = os.getenv('OPEN_WEATHER_API_KEY')
+
+log.basicConfig(level=log.INFO, format="[%(levelname)s : %(asctime)s] %(message)s")
 
 
 def is_iss_near():
@@ -88,7 +89,6 @@ def send_mail():
 
 if __name__ == "__main__":
     while is_dark():
-        status = is_iss_near()
         if is_iss_near() and is_clear_sky():
             send_mail()
         time.sleep(60)
