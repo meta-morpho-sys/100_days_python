@@ -37,7 +37,7 @@ class QuizzInterface:
         self.false_button.grid(row=2, column=0)
 
         # SCORE
-        self.score = Label(text=f"Your current score is: {self.quiz_brain.score}/{self.quiz_brain.question_number}", font=SCORE_FONT, bg=THEME_COLOR, fg='white', padx=20, pady=20,)
+        self.score = Label(text=f"Your current score is: 0/0", font=SCORE_FONT, bg=THEME_COLOR, fg='white', padx=20, pady=20,)
         self.score.grid(row=0, column=1)
 
         self.get_next_question()
@@ -46,9 +46,15 @@ class QuizzInterface:
 
     def get_next_question(self):
         self.canvas.config(bg='white')
-        question = self.quiz_brain.next_question()
-        self.score.config(text=f"Your current score is: {self.quiz_brain.score}/{self.quiz_brain.question_number}")
-        self.canvas.itemconfig(self.question_text, text=question)
+        if self.quiz_brain.still_has_questions():
+            self.score.config(text=f"Your current score is: {self.quiz_brain.score}/{self.quiz_brain.question_number}")
+            question = self.quiz_brain.next_question()
+            self.canvas.itemconfig(self.question_text, text=question)
+        else:
+            self.score.config(text=f"Your current score is: {self.quiz_brain.score}/{self.quiz_brain.question_number}")
+            self.canvas.itemconfig(self.question_text, text="You've completed the quiz!")
+            self.true_button.config(state='disabled')
+            self.false_button.config(state='disabled')
 
 
     def check_positive_answer(self):
@@ -68,5 +74,3 @@ class QuizzInterface:
         else:
             self.canvas.config(bg='red')
             self.window.after(1000, self.get_next_question)
-
-
