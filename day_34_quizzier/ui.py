@@ -37,7 +37,7 @@ class QuizzInterface:
         self.false_button.grid(row=2, column=0)
 
         # SCORE
-        self.score = Label(text='Score: 0', font=SCORE_FONT, bg=THEME_COLOR, fg='white', padx=20, pady=20,)
+        self.score = Label(text=f"Your current score is: {self.quiz_brain.score}/{self.quiz_brain.question_number}", font=SCORE_FONT, bg=THEME_COLOR, fg='white', padx=20, pady=20,)
         self.score.grid(row=0, column=1)
 
         self.get_next_question()
@@ -45,17 +45,28 @@ class QuizzInterface:
         self.window.mainloop()
 
     def get_next_question(self):
+        self.canvas.config(bg='white')
         question = self.quiz_brain.next_question()
+        self.score.config(text=f"Your current score is: {self.quiz_brain.score}/{self.quiz_brain.question_number}")
         self.canvas.itemconfig(self.question_text, text=question)
 
 
     def check_positive_answer(self):
         result = self.quiz_brain.check_answer('True')
-        print(result)
-        self.get_next_question()
+        self.give_feedback(result)
+
 
     def check_negative_answer(self):
         result = self.quiz_brain.check_answer('False')
-        print(result)
-        self.get_next_question()
+        self.give_feedback(result)
+
+
+    def give_feedback(self, is_right):
+        if is_right:
+            self.canvas.config(bg='green')
+            self.window.after(1000, self.get_next_question)
+        else:
+            self.canvas.config(bg='red')
+            self.window.after(1000, self.get_next_question)
+
 
